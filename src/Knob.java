@@ -15,7 +15,7 @@ public class Knob extends JPanel {
     Point imageCenter;
     Point clickPoint;
     Double value = 0.0;
-    Double position = Math.toRadians(-127);
+    double position = Math.toRadians(-127);
 
     Knob() {
         knobImage = new ImageIcon("PotKnob.png").getImage();
@@ -90,6 +90,9 @@ public class Knob extends JPanel {
             // debuging
             // System.out.println(Math.toDegrees(value) + ", " + Math.toDegrees(position));
             // call repaint
+            if (PluginWindow.quantum.getFrequency() != (int) position) {
+                PluginWindow.quantum.setFrequency((int) (440 * getPosition()));
+            }
             doRepaint();
         }
     }

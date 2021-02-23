@@ -13,10 +13,9 @@ public class QuantumSynth {
         }
         short[] s = new short[AudioThread.BUFFER_SIZE];
         for (int i = 0; i < AudioThread.BUFFER_SIZE; i++) {
-            s[i] = (short) (Short.MAX_VALUE * Math.sin((2 * Math.PI * 440) / AudioInfo.SAMPLE_RATE * wavePos++));
+            s[i] = (short) (Short.MAX_VALUE * Math.sin((2 * Math.PI * frequency) / AudioInfo.SAMPLE_RATE * wavePos++));
         }
         return s;
-
     });
 
     QuantumSynth(PluginWindow frame) {

@@ -7,6 +7,7 @@ import javax.swing.JComboBox;
 import java.awt.*;
 
 public class PluginWindow extends JFrame implements Runnable {
+    static QuantumSynth quantum;
     private WaveForm wave = WaveForm.Sine;
     static final Dimension windowDimension = new Dimension(1045, 832);
     Container cp;
@@ -88,11 +89,15 @@ public class PluginWindow extends JFrame implements Runnable {
         return windowDimension;
     }
 
+    public int getFrequency() {
+        return knobOne.getFrequency();
+    }
+
     @Override
     public synchronized void run() {
-        // while (this.isActive()) {
-        // }
+        quantum = new QuantumSynth(this);
 
+        quantum.setFrequency(getFrequency());
     }
 
     private enum WaveForm {

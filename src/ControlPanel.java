@@ -24,6 +24,10 @@ public class ControlPanel extends JPanel {
         return controllDimension;
     }
 
+    public int getFrequency() {
+        return (int) knobOne.position;
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);

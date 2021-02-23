@@ -16,6 +16,7 @@ public class QuantumSynth {
             s[i] = (short) (Short.MAX_VALUE * Math.sin((2 * Math.PI * 440) / AudioInfo.SAMPLE_RATE * wavePos++));
         }
         return s;
+
     });
 
     QuantumSynth(PluginWindow frame) {

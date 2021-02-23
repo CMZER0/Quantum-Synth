@@ -8,7 +8,7 @@ import java.awt.BasicStroke;
 import java.awt.*;
 
 public class OscillatorPanel extends JPanel implements ActionListener {
-    final Dimension oscDimension = new Dimension(500, 350);
+    static final Dimension oscDimension = new Dimension(500, 350);
     Timer timer;
     int xPos = 0;
     int velocity = 5;
@@ -26,6 +26,7 @@ public class OscillatorPanel extends JPanel implements ActionListener {
         this.c = c;
         this.setVisible(true);
         this.setPreferredSize(oscDimension);
+        setSize(oscDimension);
         this.setBackground(c);
         fader = new ImageIcon("OscScanner.png").getImage();
         timer = new Timer(25, this);
@@ -34,6 +35,7 @@ public class OscillatorPanel extends JPanel implements ActionListener {
 
     @Override
     public void paint(Graphics g) {
+        super.paint(g);
         Graphics2D Osc = (Graphics2D) g;
 
         Osc.setColor(c);

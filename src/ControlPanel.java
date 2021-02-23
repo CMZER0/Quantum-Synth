@@ -5,10 +5,12 @@ import java.awt.*;
 
 public class ControlPanel extends JPanel {
     final public Dimension controllDimension = new Dimension(800, 325);
+
     protected Knob knobOne;
     protected Knob knobTwo;
 
     ControlPanel() {
+
         // Init Knobs
         knobOne = new Knob();
         knobTwo = new Knob();
@@ -28,6 +30,7 @@ public class ControlPanel extends JPanel {
     public void paint(Graphics g) {
         knobOne.paint(knobOne.getGraphics());
         knobTwo.paint(knobTwo.getGraphics());
+
     }
 
 }

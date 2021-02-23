@@ -1,13 +1,23 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.RootPaneContainer;
+import javax.swing.plaf.ComponentUI;
+import org.lwjgl.system.CallbackI.F;
+import java.awt.event.ItemEvent;
 import utils.Utils;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+
 import java.awt.*;
 
 public class PluginWindow extends JFrame implements Runnable {
-    static final Dimension windowDimension = new Dimension(1045, 800);
+    private WaveForm wave = WaveForm.Sine;
+    static final Dimension windowDimension = new Dimension(1045, 832);
+    Container cp;
     protected OscillatorPanel oscOne;
+    JComboBox<WaveForm> comboBoxOne;
     protected OscillatorPanel oscTwo;
+    JComboBox<WaveForm> comboBoxTwo;
     protected ControlPanel knobPanel;
     ImageIcon icon;
     Image backGround;
@@ -23,8 +33,33 @@ public class PluginWindow extends JFrame implements Runnable {
         backGround = new ImageIcon("BackGround.png").getImage();
         // Init OscillatorPanels
         oscOne = new OscillatorPanel(Color.black);
+        oscOne.setBounds(10, 10, (int) OscillatorPanel.oscDimension.getWidth(),
+                (int) OscillatorPanel.oscDimension.getHeight());
         oscTwo = new OscillatorPanel(Color.black);
+        oscTwo.setBounds(10, 10, (int) OscillatorPanel.oscDimension.getWidth(),
+                (int) OscillatorPanel.oscDimension.getHeight());
         // Init Controls
+        // Init JCombo Box
+        comboBoxOne = new JComboBox<>(
+                new WaveForm[] { WaveForm.Sine, WaveForm.Square, WaveForm.Saw, WaveForm.Triangle, WaveForm.Noise });
+        comboBoxOne.setSelectedItem(WaveForm.Sine);
+        // comboBoxOne.setSize(75, 25);
+        comboBoxOne.addItemListener(l -> {
+            if (l.getStateChange() == ItemEvent.SELECTED) {
+                wave = (WaveForm) l.getItem();
+            }
+        });
+        comboBoxOne.setVisible(true);
+        comboBoxTwo = new JComboBox<>(
+                new WaveForm[] { WaveForm.Sine, WaveForm.Square, WaveForm.Saw, WaveForm.Triangle, WaveForm.Noise });
+        comboBoxTwo.setSelectedItem(WaveForm.Sine);
+        // comboBoxTwo.setSize(75, 25);
+        comboBoxTwo.addItemListener(l -> {
+            if (l.getStateChange() == ItemEvent.SELECTED) {
+                wave = (WaveForm) l.getItem();
+            }
+        });
+        comboBoxOne.setVisible(true);
         knobPanel = new ControlPanel();
         // Init Jframe Properties
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,15 +67,21 @@ public class PluginWindow extends JFrame implements Runnable {
         this.setResizable(false);
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         this.setVisible(true);
+        this.setLocationRelativeTo(null);
         // Add to Jframe
         this.setIconImage(icon.getImage());
-        this.add(oscOne);
-        this.add(oscTwo);
-        this.add(knobPanel);
+        setLayout(new BorderLayout());
+        cp = new JLabel(new ImageIcon("BackGround.png"));
+        cp.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        this.add(cp);
+        cp.add(oscOne);
+        cp.add(oscTwo);
+        cp.add(comboBoxOne);
+        cp.add(comboBoxTwo);
+        cp.add(knobPanel);
+
         // Pack Frame
         this.pack();
-        // Jframe Execute Properties
-        this.setLocationRelativeTo(null);
     }
 
     public static Dimension getWindowdimension() {
@@ -48,17 +89,13 @@ public class PluginWindow extends JFrame implements Runnable {
     }
 
     @Override
-    public void paint(Graphics g) {
-        Graphics2D g2D = (Graphics2D) g;
-        g2D.drawImage(backGround, 0, 0, null);
-        // To paint a component, call it's paint method
-        knobPanel.paint(knobPanel.getGraphics());
+    public synchronized void run() {
+        // while (this.isActive()) {
+        // }
+
     }
 
-    @Override
-    public synchronized void run() {
-        while (this.isActive()) {
-            Utils.invoke(this::wait, false);
-        }
+    private enum WaveForm {
+        Sine, Square, Saw, Triangle, Noise
     }
 }

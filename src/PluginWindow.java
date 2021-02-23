@@ -1,10 +1,6 @@
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.RootPaneContainer;
-import javax.swing.plaf.ComponentUI;
-import org.lwjgl.system.CallbackI.F;
 import java.awt.event.ItemEvent;
-import utils.Utils;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 
@@ -18,7 +14,9 @@ public class PluginWindow extends JFrame implements Runnable {
     JComboBox<WaveForm> comboBoxOne;
     protected OscillatorPanel oscTwo;
     JComboBox<WaveForm> comboBoxTwo;
-    protected ControlPanel knobPanel;
+    protected ControlPanel knobOne;
+    protected ControlPanel knobTwo;
+
     ImageIcon icon;
     Image backGround;
     JLabel label;
@@ -60,7 +58,8 @@ public class PluginWindow extends JFrame implements Runnable {
             }
         });
         comboBoxOne.setVisible(true);
-        knobPanel = new ControlPanel();
+        knobOne = new ControlPanel();
+        knobTwo = new ControlPanel();
         // Init Jframe Properties
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setPreferredSize(windowDimension);
@@ -77,8 +76,9 @@ public class PluginWindow extends JFrame implements Runnable {
         cp.add(oscOne);
         cp.add(oscTwo);
         cp.add(comboBoxOne);
+        cp.add(knobOne);
         cp.add(comboBoxTwo);
-        cp.add(knobPanel);
+        cp.add(knobTwo);
 
         // Pack Frame
         this.pack();

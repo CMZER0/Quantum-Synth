@@ -15,7 +15,8 @@ public class Knob extends JPanel {
     Point imageCenter;
     Point clickPoint;
     Double value = 0.0;
-    double position = Math.toRadians(-127);
+    double position = Math.toRadians(0);
+    double knobOffset;
 
     Knob() {
         knobImage = new ImageIcon("PotKnob.png").getImage();
@@ -24,7 +25,7 @@ public class Knob extends JPanel {
         DragListener drag = new DragListener();
         this.addMouseListener(click);
         this.addMouseMotionListener(drag);
-        this.setPreferredSize(knobDimension);
+        this.setSize(knobDimension);
         imageCorner = new Point(0, 0);
         imageCenter = new Point((int) imageCorner.getX() + (knobDimension.width / 2),
                 (int) imageCorner.getY() + (knobDimension.height / 2));
@@ -35,17 +36,38 @@ public class Knob extends JPanel {
     // METHODS //
     public void doRepaint() {
         this.update(this.getGraphics());
+
     }
 
-    public void minMaxValue() {
+    public double getKnobOffset() {
+        return knobOffset;
+    }
+
+    public boolean minMaxValue() {
         // Checks for min/max value
         Double min = Math.toRadians(-127);
         Double max = Math.toRadians(127);
         if (position <= min) {
             setPosition(min);
+            return false;
         } else if (position >= max) {
             setPosition(max);
+            return false;
         }
+        return true;
+    }
+
+    public void ckeckMovement(boolean mouseMovingUp) {
+        if (mouseMovingUp) {
+
+            knobOffset += Math.pow(((position / Math.toRadians(Oscillator.TONE_OFFSET_LIMIT / 360)) * 4), 1);
+
+        } else if (!mouseMovingUp) {
+
+            knobOffset -= Math.pow(((position / Math.toRadians(Oscillator.TONE_OFFSET_LIMIT / 360)) * 4), 1);
+
+        }
+        // apply ofset
     }
 
     // GETTERS & SETTERS //
@@ -59,11 +81,11 @@ public class Knob extends JPanel {
 
     @Override
     public void paint(Graphics g) {
+        // super.paint(g);
         Graphics2D g2D = (Graphics2D) g;
         AffineTransform trans = new AffineTransform();
         trans.rotate(position, imageCenter.getX(), imageCenter.getY());
         g2D.drawImage(knobImage, trans, this);
-
     }
 
     public class ClickListener extends MouseAdapter {
@@ -71,12 +93,18 @@ public class Knob extends JPanel {
         public void mousePressed(MouseEvent m) {
             // gets mouse position
             clickPoint = m.getPoint();
+            if (m.getClickCount() == 2) {
+                position = Math.toRadians(0);
+                knobOffset = 0d;
+                doRepaint();
+            }
         }
     }
 
     private class DragListener extends MouseMotionAdapter {
         @Override
         public void mouseDragged(MouseEvent m) {
+            boolean mouseMovingUp = clickPoint.y - m.getYOnScreen() > 0;
             value = ((m.getY() - clickPoint.getY())) / ((superDimension.getHeight()) / (double) .4);
             position -= value;
             // Removing unneeded rotations
@@ -87,13 +115,15 @@ public class Knob extends JPanel {
             }
             // checking position min / max
             minMaxValue();
+            ckeckMovement(mouseMovingUp);
+
             // debuging
             // System.out.println(Math.toDegrees(value) + ", " + Math.toDegrees(position));
+            clickPoint = imageCenter;
             // call repaint
-            if (PluginWindow.quantum.getFrequency() != (int) position) {
-                PluginWindow.quantum.setFrequency((int) (440 * getPosition()));
-            }
             doRepaint();
         }
+
     }
+
 }

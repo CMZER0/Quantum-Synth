@@ -3,13 +3,13 @@ import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.*;
 
-public class ControlPanel extends JPanel {
+public class KnobPanel extends JPanel {
     final public Dimension controllDimension = new Dimension(60, 60);
 
     protected Knob knobOne;
     protected Knob knobTwo;
 
-    ControlPanel() {
+    KnobPanel() {
 
         // Init Knobs
         knobOne = new Knob();

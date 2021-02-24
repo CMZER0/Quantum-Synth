@@ -12,15 +12,10 @@ import java.awt.BasicStroke;
 import java.awt.*;
 import java.util.Random;
 
-public class Oscillator extends SynthControlContainer implements ActionListener {
+public class Oscillator extends SynthControlContainer {
 
     // static final Dimension oscDimension = new Dimension(500, 350);
     static final Dimension oscDimension = new Dimension(279, 100);
-    Timer timer;
-    int xPos = 0;
-    int velocity = 5;
-    Color c;
-    Image fader;
     Knob knobOne = new Knob();
     // Wave Graph Vars
     Sine sines = new Sine();
@@ -45,14 +40,11 @@ public class Oscillator extends SynthControlContainer implements ActionListener 
     Oscillator(QuantumSynth quantum) {
         // Init JPanel
         super(quantum);
-        this.c = Color.WHITE;
+        this.setBackground(Color.BLACK);
+        this.setBorder(utils.Utils.WindowDesing.LINE_BORDER);
         this.setVisible(true);
         this.setSize(oscDimension);
         setLayout(null);
-        this.setBackground(c);
-        fader = new ImageIcon("OscScanner.png").getImage();
-        timer = new Timer(25, this);
-        timer.start();
         // Init JCombo Box
         comboBox = new JComboBox<>(
                 new WaveForm[] { WaveForm.Sine, WaveForm.Square, WaveForm.Saw, WaveForm.Triangle, WaveForm.Noise });
@@ -68,6 +60,7 @@ public class Oscillator extends SynthControlContainer implements ActionListener 
         add(knobOne);
         add(comboBox);
         tone = new JLabel("x0.00");
+        tone.setForeground(Color.WHITE);
         tone.setBounds(165, 65, 50, 25);
         tone.addMouseListener(new MouseAdapter() {
             @Override
@@ -105,6 +98,8 @@ public class Oscillator extends SynthControlContainer implements ActionListener 
         });
         add(tone);
         JLabel toneText = new JLabel("Tone");
+        toneText.setForeground(Color.WHITE);
+
         toneText.setBounds(172, 40, 75, 25);
         add(toneText);
     }
@@ -113,47 +108,6 @@ public class Oscillator extends SynthControlContainer implements ActionListener 
     public void paint(Graphics g) {
         super.paint(g);
         knobOne.paint(knobOne.getGraphics());
-        // Graphics2D Osc = (Graphics2D) g;
-        // Osc.setColor(c);
-        // Osc.fillRect(0, 0, getWidth(), getHeight());
-        // Osc.setColor(Color.WHITE);
-        // Osc.setStroke(new BasicStroke(3));
-        // ///////////////////////////
-        // // Drawing WAV functions //
-        // ///////////////////////////
-        // Graphics2D Wav = (Graphics2D) g;
-        // Osc.drawLine(0, getHeight() / 2, getWidth(), getHeight() / 2);
-        // drawWaveGraph(Wav);// draws actual graph
-        // Osc.drawImage(fader, xPos - 500, 0, this);
-        // Osc.drawRect(0, 0, getWidth(), getHeight());
-
-    }
-
-    public void drawWaveGraph(Graphics2D g2d) {
-        double hstep = (double) getWidth() / (double) xPts; // hstep mean the horizontal distance between two xPts on
-                                                            // the screen
-        yPts = new int[xPts];
-        for (int i = 0; i < xPts; ++i) {
-            yPts[i] = (int) (waveData[i] * getHeight() / 2 * 0.95 + getHeight() / 2);
-        }
-        for (int i = 1; i < xPts; ++i) {
-            // Set distance of line to be equal to one unit of x
-            int x1 = (int) ((i - 1) * hstep);
-            int x2 = (int) (i * hstep);
-            // Set Y to be the vealue of sin(x)
-            int y1 = yPts[i - 1];
-            int y2 = yPts[i];
-            g2d.drawLine(x1, y1, x2, y2);
-        }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (xPos >= getWidth() + 500)
-            xPos = 0;
-        else
-            xPos += velocity;
-        // this.repaint();
     }
 
     private enum WaveForm {

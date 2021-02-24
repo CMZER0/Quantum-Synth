@@ -3,6 +3,8 @@ import java.awt.event.*;
 import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.plaf.FontUIResource;
+
 import utils.Utils;
 import javax.swing.ImageIcon;
 import java.awt.*;
@@ -39,7 +41,11 @@ public class QuantumSynth {
         public void keyPressed(KeyEvent e) {
             if (!audio.isRunning()) {
                 for (Oscillator o : oscillators) {
-                    o.setKeyFrequency(KEY_FREQUENCIES.get(e.getKeyChar()));
+                    try {
+                        o.setKeyFrequency(KEY_FREQUENCIES.get(e.getKeyChar()));
+                    } catch (Exception f) {
+                        // TODO: I dont care, do you?
+                    }
                 }
                 shouldGenerate = true;
                 audio.triggerPlayback();
@@ -64,12 +70,12 @@ public class QuantumSynth {
 
     QuantumSynth() {
 
-        int y = 0;
+        int y = 10;
         for (int i = 0; i < oscillators.length; i++) {
             oscillators[i] = new Oscillator(this);
             oscillators[i].setLocation(5, y);
             window.cp.add(oscillators[i]);
-            y += 105;
+            y += 210;
         }
         window.addKeyListener(keyAdapter);
         window.addWindowListener(new WindowAdapter() {
@@ -78,6 +84,9 @@ public class QuantumSynth {
                 audio.close();
             }
         });
+        Graph g = new Graph();
+        g.setLocation(window.getWidth() - (int) g.oscDimension.getWidth() - 50, 35);
+        window.cp.add(g);
         window.repaint();
     }
 

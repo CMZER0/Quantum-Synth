@@ -1,6 +1,8 @@
 package utils;
 
 import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 
 public class Utils {
 
@@ -12,6 +14,10 @@ public class Utils {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static class WindowDesing {
+        public static final Border LINE_BORDER = BorderFactory.createLineBorder(Color.WHITE);
     }
 
     public static class ParameterHandeling {

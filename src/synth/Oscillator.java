@@ -1,21 +1,17 @@
+package synth;
+
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import javax.swing.*;
-
-import utils.Utils;
-
 import java.awt.Dimension;
 import java.awt.Color;
-import java.awt.BasicStroke;
 import java.awt.*;
-import java.util.Random;
 
 public class Oscillator extends SynthControlContainer {
 
     // static final Dimension oscDimension = new Dimension(500, 350);
-    static final Dimension oscDimension = new Dimension(279, 100);
+    static final Dimension oscDimension = new Dimension(300, 100);
     Knob knobOne = new Knob();
     // Wave Graph Vars
     Sine sines = new Sine();
@@ -23,13 +19,11 @@ public class Oscillator extends SynthControlContainer {
     int xPts = sines.getxPts();
     int[] yPts = sines.getyPts();
     // Osc Control Vars //
-    private WaveForm wave = WaveForm.Sine;
+    private WaveTable wave = WaveTable.Sine;
     private double keyFrequency;
-    private double frequency;
-    JComboBox<WaveForm> comboBox;
+    private int wavetableStepSize;
+    private int wavetableIndex;
 
-    private static Random rdmNum = new Random();
-    private int wavePos;
     // Tone vars
     public JLabel tone = new JLabel("x0.00");;
     protected double toneOffset;
@@ -41,18 +35,17 @@ public class Oscillator extends SynthControlContainer {
         // Init JPanel
         super(quantum);
         this.setBackground(Color.BLACK);
-        this.setBorder(utils.Utils.WindowDesing.LINE_BORDER);
+        this.setBorder(synth.utils.Utils.WindowDesing.LINE_BORDER);
         this.setVisible(true);
         this.setSize(oscDimension);
         setLayout(null);
         // Init JCombo Box
-        comboBox = new JComboBox<>(
-                new WaveForm[] { WaveForm.Sine, WaveForm.Square, WaveForm.Saw, WaveForm.Triangle, WaveForm.Noise });
-        comboBox.setSelectedItem(WaveForm.Sine);
+        JComboBox<WaveTable> comboBox = new JComboBox<>(WaveTable.values());
+        comboBox.setSelectedItem(WaveTable.Sine);
         comboBox.setSize(75, 25);
         comboBox.addItemListener(l -> {
             if (l.getStateChange() == ItemEvent.SELECTED) {
-                wave = (WaveForm) l.getItem();
+                wave = (WaveTable) l.getItem();
             }
         });
         // Tone Control
@@ -93,7 +86,8 @@ public class Oscillator extends SynthControlContainer {
                     applyToneOffset();
                     tone.setText(("x" + String.format("%.3f", getToneOffset())));
                 }
-                utils.Utils.ParameterHandeling.PARAMETER_ROBOT.mouseMove(mouseClickLocation.x, mouseClickLocation.y);
+                synth.utils.Utils.ParameterHandeling.PARAMETER_ROBOT.mouseMove(mouseClickLocation.x,
+                        mouseClickLocation.y);
             }
         });
         add(tone);
@@ -110,16 +104,8 @@ public class Oscillator extends SynthControlContainer {
         knobOne.paint(knobOne.getGraphics());
     }
 
-    private enum WaveForm {
-        Sine, Square, Saw, Triangle, Noise
-    }
-
-    public double getKeyFrequency() {
-        return frequency;
-    }
-
     public void setKeyFrequency(double frequency) {
-        keyFrequency = this.frequency = frequency;
+        keyFrequency = frequency;
         applyToneOffset();
     }
 
@@ -128,26 +114,37 @@ public class Oscillator extends SynthControlContainer {
     }
 
     public double nextSample() {
-        double tDivP = (wavePos++ / (double) AudioInfo.SAMPLE_RATE) / (1d / frequency);
-        switch (wave) {
-            case Sine:
-                return Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(frequency) * (wavePos - 1)
-                        / AudioInfo.SAMPLE_RATE);
-            case Square:
-                return Math.signum(Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(frequency) * (wavePos - 1)
-                        / AudioInfo.SAMPLE_RATE));
-            case Saw:
-                return 2d * (tDivP - Math.floor(0.5 + tDivP));
-            case Triangle:
-                return 2d * Math.abs(2d * (tDivP - Math.floor(0.5 + tDivP))) - 1;
-            case Noise:
-                return rdmNum.nextDouble();
-            default:
-                throw new RuntimeException("Oscillator set to unkown waveform");
-        }
+        double sample = wave.getSamples()[wavetableIndex];
+        wavetableIndex = (wavetableIndex + wavetableStepSize) % WaveTable.SIZE;
+        return sample;
     }
 
     private void applyToneOffset() {
-        frequency = keyFrequency * Math.pow(2, getToneOffset());
+        wavetableStepSize = (int) (WaveTable.SIZE * (keyFrequency * Math.pow(2, getToneOffset()))
+                / AudioInfo.SAMPLE_RATE);
     }
+
+    // public double nextSample() {
+    // double tDivP = (wavePos++ / (double) AudioInfo.SAMPLE_RATE) / (1d /
+    // frequency);
+    // switch (wave) {
+    // case Sine:
+    // return Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(frequency) *
+    // (wavePos - 1)
+    // / AudioInfo.SAMPLE_RATE);
+    // case Square:
+    // return
+    // Math.signum(Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(frequency)
+    // * (wavePos - 1)
+    // / AudioInfo.SAMPLE_RATE));
+    // case Saw:
+    // return 2d * (tDivP - Math.floor(0.5 + tDivP));
+    // case Triangle:
+    // return 2d * Math.abs(2d * (tDivP - Math.floor(0.5 + tDivP))) - 1;
+    // case Noise:
+    // return rdmNum.nextDouble();
+    // default:
+    // throw new RuntimeException("Oscillator set to unkown waveform");
+    // }
+    // }
 }

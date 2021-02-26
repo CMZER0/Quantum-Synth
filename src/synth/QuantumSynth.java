@@ -1,13 +1,8 @@
-import javax.swing.*;
+package synth;
+
 import java.awt.event.*;
 import java.util.HashMap;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.plaf.FontUIResource;
-
-import utils.Utils;
-import javax.swing.ImageIcon;
-import java.awt.*;
+import synth.utils.Utils;
 
 public class QuantumSynth {
 
@@ -17,9 +12,9 @@ public class QuantumSynth {
 
     private final Oscillator[] oscillators = new Oscillator[3];
 
-    private final PluginWindow window = new PluginWindow();
+    private final Graph[] graphs = new Graph[3];
 
-    private Knob knobOne;
+    private final PluginWindow window = new PluginWindow();
 
     private AudioThread audio = new AudioThread(() -> {
         if (!shouldGenerate) {
@@ -43,12 +38,12 @@ public class QuantumSynth {
                 for (Oscillator o : oscillators) {
                     try {
                         o.setKeyFrequency(KEY_FREQUENCIES.get(e.getKeyChar()));
+                        shouldGenerate = true;
+                        audio.triggerPlayback();
                     } catch (Exception f) {
-                        // TODO: I dont care, do you?
+                        return;
                     }
                 }
-                shouldGenerate = true;
-                audio.triggerPlayback();
             }
         }
 
@@ -70,12 +65,15 @@ public class QuantumSynth {
 
     QuantumSynth() {
 
-        int y = 10;
+        int y = 35;
         for (int i = 0; i < oscillators.length; i++) {
             oscillators[i] = new Oscillator(this);
             oscillators[i].setLocation(5, y);
             window.cp.add(oscillators[i]);
-            y += 210;
+            graphs[i] = new Graph();
+            graphs[i].setLocation(window.getWidth() - (int) graphs[i].oscDimension.getWidth() - 50, y);
+            window.cp.add(graphs[i]);
+            y += 170;
         }
         window.addKeyListener(keyAdapter);
         window.addWindowListener(new WindowAdapter() {
@@ -84,9 +82,6 @@ public class QuantumSynth {
                 audio.close();
             }
         });
-        Graph g = new Graph();
-        g.setLocation(window.getWidth() - (int) g.oscDimension.getWidth() - 50, 35);
-        window.cp.add(g);
         window.repaint();
     }
 

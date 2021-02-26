@@ -1,24 +1,24 @@
+package synth;
+
 import javax.swing.JPanel;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.*;
-import utils.Utils;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.BasicStroke;
 import java.awt.*;
-import java.util.Random;
 
 public class Graph extends JPanel implements ActionListener {
-    static final Dimension oscDimension = new Dimension(500, 350);
+    final Dimension oscDimension = new Dimension(300, 150);
     Timer timer;
     int xPos = 0;
     int velocity = 5;
     Color c;
     Image fader;
-    // Wave Graph Vars
+    // Wave Graph
+    // Vars
     Sine sines = new Sine();
     double[] waveData = sines.getWaveData();
     int xPts = sines.getxPts();
@@ -26,7 +26,7 @@ public class Graph extends JPanel implements ActionListener {
 
     Graph() {
         this.c = Color.BLACK;
-        this.setBorder(utils.Utils.WindowDesing.LINE_BORDER);
+        this.setBorder(synth.utils.Utils.WindowDesing.LINE_BORDER);
         this.setVisible(true);
         this.setSize(oscDimension);
         setLayout(null);
@@ -43,7 +43,7 @@ public class Graph extends JPanel implements ActionListener {
         Osc.setColor(c);
         Osc.fillRect(0, 0, getWidth(), getHeight());
         Osc.setColor(Color.WHITE);
-        Osc.setStroke(new BasicStroke(3));
+        Osc.setStroke(new BasicStroke(1));
         ///////////////////////////
         // Drawing WAV functions //
         ///////////////////////////
@@ -56,6 +56,8 @@ public class Graph extends JPanel implements ActionListener {
     }
 
     public void drawWaveGraph(Graphics2D g2d) {
+        int xPts = 400;
+        int[] yPts = new int[xPts];
         double hstep = (double) getWidth() / (double) xPts; // hstep mean the horizontal distance between two xPts on
                                                             // the screen
         yPts = new int[xPts];

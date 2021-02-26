@@ -1,3 +1,5 @@
+package synth;
+
 class Sine {
     // VARS //
     private static final int SCALEFACTOR = 200;

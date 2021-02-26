@@ -1,3 +1,5 @@
+package synth;
+
 import javax.swing.JPanel;
 import java.awt.Component;
 import java.awt.*;
@@ -9,6 +11,14 @@ public class SynthControlContainer extends JPanel {
 
     public SynthControlContainer(QuantumSynth quantum) {
         this.quantum = quantum;
+    }
+
+    public Point getMouseClickLocation() {
+        return mouseClickLocation;
+    }
+
+    public void setMouseClickLocation(Point mouseClickLocation) {
+        this.mouseClickLocation = mouseClickLocation;
     }
 
     public boolean isOn() {

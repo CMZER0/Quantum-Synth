@@ -26,7 +26,7 @@ public class Graph extends JPanel implements ActionListener {
 
     Graph() {
         this.c = Color.BLACK;
-        this.setBorder(synth.utils.Utils.WindowDesing.LINE_BORDER);
+        this.setBorder(utils.Utils.WindowDesing.LINE_BORDER);
         this.setVisible(true);
         this.setSize(oscDimension);
         setLayout(null);

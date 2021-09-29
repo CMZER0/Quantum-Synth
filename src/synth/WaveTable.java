@@ -13,9 +13,9 @@ public enum WaveTable {
             double t = i / (double) AudioInfo.SAMPLE_RATE;
             double tDivP = t / (1d / FUNDEMENTAL_FREQUENCY);
             Sine.samples[i] = (float) Math
-                    .sin(synth.utils.Utils.myMath.frequencyToAngularFrequency(FUNDEMENTAL_FREQUENCY) * t);
+                    .sin(utils.Utils.myMath.frequencyToAngularFrequency(FUNDEMENTAL_FREQUENCY) * t);
             Square.samples[i] = (float) Math
-                    .signum(Math.sin(synth.utils.Utils.myMath.frequencyToAngularFrequency(FUNDEMENTAL_FREQUENCY) * t));
+                    .signum(Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(FUNDEMENTAL_FREQUENCY) * t));
             Saw.samples[i] = (float) (2d * (tDivP - Math.floor(0.5 + tDivP)));
             Triangle.samples[i] = (float) (2d * Math.abs(2d * (tDivP - Math.floor(0.5 + tDivP))) - 1d);
         }

@@ -1,4 +1,4 @@
-package synth.utils;
+package utils;
 
 public class RefWrapper<T> {
     public T val;

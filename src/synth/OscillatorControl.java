@@ -38,11 +38,11 @@ public class OscillatorControl extends JPanel {
         double tDivP = (wavePos++ / (double) AudioInfo.SAMPLE_RATE) / (1d / FREQUENCY);
         switch (wave) {
             case Sine:
-                return Math.sin(synth.utils.Utils.myMath.frequencyToAngularFrequency(FREQUENCY) * (wavePos - 1)
+                return Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(FREQUENCY) * (wavePos - 1)
                         / AudioInfo.SAMPLE_RATE);
             case Square:
-                return Math.signum(Math.sin(synth.utils.Utils.myMath.frequencyToAngularFrequency(FREQUENCY)
-                        * (wavePos - 1) / AudioInfo.SAMPLE_RATE));
+                return Math.signum(Math.sin(utils.Utils.myMath.frequencyToAngularFrequency(FREQUENCY) * (wavePos - 1)
+                        / AudioInfo.SAMPLE_RATE));
             case Saw:
                 return 2d * (tDivP - Math.floor(0.5 + tDivP));
             case Triangle:

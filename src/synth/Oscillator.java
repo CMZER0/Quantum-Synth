@@ -23,7 +23,6 @@ public class Oscillator extends SynthControlContainer {
     private double keyFrequency;
     private int wavetableStepSize;
     private int wavetableIndex;
-
     // Tone vars
     public JLabel tone = new JLabel("x0.00");;
     protected double toneOffset;
@@ -35,7 +34,7 @@ public class Oscillator extends SynthControlContainer {
         // Init JPanel
         super(quantum);
         this.setBackground(Color.BLACK);
-        this.setBorder(synth.utils.Utils.WindowDesing.LINE_BORDER);
+        this.setBorder(utils.Utils.WindowDesing.LINE_BORDER);
         this.setVisible(true);
         this.setSize(oscDimension);
         setLayout(null);
@@ -56,6 +55,7 @@ public class Oscillator extends SynthControlContainer {
         tone.setForeground(Color.WHITE);
         tone.setBounds(165, 65, 50, 25);
         tone.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 final Cursor BLANK_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(
@@ -74,6 +74,7 @@ public class Oscillator extends SynthControlContainer {
             }
         });
         tone.addMouseMotionListener(new MouseAdapter() {
+
             @Override
             public void mouseDragged(MouseEvent e) {
                 boolean mouseMovingUp = mouseClickLocation.y - e.getYOnScreen() > 0;
@@ -86,14 +87,12 @@ public class Oscillator extends SynthControlContainer {
                     applyToneOffset();
                     tone.setText(("x" + String.format("%.3f", getToneOffset())));
                 }
-                synth.utils.Utils.ParameterHandeling.PARAMETER_ROBOT.mouseMove(mouseClickLocation.x,
-                        mouseClickLocation.y);
+                utils.Utils.ParameterHandeling.PARAMETER_ROBOT.mouseMove(mouseClickLocation.x, mouseClickLocation.y);
             }
         });
         add(tone);
         JLabel toneText = new JLabel("Tone");
         toneText.setForeground(Color.WHITE);
-
         toneText.setBounds(172, 40, 75, 25);
         add(toneText);
     }

@@ -3,7 +3,7 @@ package synth;
 import java.util.function.Supplier;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
-import synth.utils.Utils;
+import utils.Utils;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
 

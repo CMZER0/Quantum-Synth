@@ -2,7 +2,7 @@ package synth;
 
 import java.awt.event.*;
 import java.util.HashMap;
-import synth.utils.Utils;
+import utils.Utils;
 
 public class QuantumSynth {
 

@@ -23,7 +23,7 @@ public class PluginWindow extends JFrame {
         label.setIcon(icon);
         this.setTitle("QUANTUM Z3R0");
         // Set Background
-        backGround = new ImageIcon("BackGround.png").getImage();
+        backGround = new ImageIcon("C:\\Users\\xcmze\\Desktop\\Quantum\\BackGround.png").getImage();
         // Init OscillatorPanels
         // oscOne = new Oscillator(Color.black);
         // oscOne.setBounds(10, 10, (int) Oscillator.oscDimension.getWidth(),

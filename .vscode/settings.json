@@ -1,6 +1,17 @@
 {
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+        "lib/**/*.jar",
+        "Quantum/lib/lwjgl.jar",
+        "Quantum/lib/lwjgl-javadoc.jar",
+        "Quantum/lib/lwjgl-natives-windows.jar",
+        "Quantum/lib/lwjgl-openal.jar",
+        "Quantum/lib/lwjgl-openal-javadoc.jar",
+        "Quantum/lib/lwjgl-openal-natives-windows.jar",
+        "Quantum/lib/lwjgl-openal-sources.jar",
+        "Quantum/lib/lwjgl-sources.jar"
     ],
-    "git.ignoreLimitWarning": true
+    "java.project.sourcePaths": [
+        "src",
+        "rec"
+    ]
 }
